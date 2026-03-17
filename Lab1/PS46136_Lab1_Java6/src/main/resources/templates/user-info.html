@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="info">
+    <hr>
+    <p>Username: <b th:text="${#authentication.name}"></b></p>
+    <p><a href="/logout">Logout</a></p>
+</div>
+
+</body>
+</html>
