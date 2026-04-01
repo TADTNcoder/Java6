@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="userInfo">
+    <div th:if="${@auth.authenticated}">
+        <h3 style="margin-top:0; color:#1f2937;">Thông tin đăng nhập</h3>
+        <ul style="list-style:none; padding:0; margin:0;">
+            <li style="padding:10px 0; border-bottom:1px solid #c7d2fe;">
+                <b>Username:</b>
+                <span th:text="${@auth.username}"></span>
+            </li>
+            <li style="padding:10px 0; border-bottom:1px solid #c7d2fe;">
+                <b>Roles:</b>
+                <span th:text="${@auth.roles}"></span>
+            </li>
+            <li style="padding-top:14px;">
+                <a th:href="@{/logout}"
+                   style="display:inline-block; background:#ef4444; color:white; text-decoration:none; padding:10px 16px; border-radius:10px; font-weight:bold;">
+                    Sign-out
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:unless="${@auth.authenticated}" style="text-align:center;">
+        <h3 style="margin-top:0; color:#1f2937;">Bạn chưa đăng nhập</h3>
+        <p style="color:#4b5563;">Hãy đăng nhập để truy cập các chức năng được bảo vệ.</p>
+        <a th:href="@{/login/form}"
+           style="display:inline-block; background:#2563eb; color:white; text-decoration:none; padding:10px 16px; border-radius:10px; font-weight:bold;">
+            Đăng nhập ngay
+        </a>
+    </div>
+</div>
+</body>
+</html>

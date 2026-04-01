@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 4 - REST Client</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dbeafe, #e0e7ff, #ede9fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container{
+            width: 100%;
+            max-width: 900px;
+            background: #ffffff;
+            border-radius: 22px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            padding: 32px;
+        }
+
+        h1{
+            margin: 0 0 10px;
+            text-align: center;
+            color: #1e3a8a;
+        }
+
+        .sub{
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .actions{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        button{
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover{
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .output{
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 16px;
+            padding: 18px;
+            min-height: 280px;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+
+        .host{
+            background: #eff6ff;
+            color: #1e3a8a;
+            border: 1px solid #bfdbfe;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RESTful Web API</h1>
+        <p class="sub">Lab 4 - Firebase Realtime Database + Axios</p>
+
+        <div class="host">
+            Host: https://lab4-b50a2-default-rtdb.firebaseio.com
+        </div>
+
+        <div class="actions">
+            <button onclick="doGetAll()">Get All</button>
+            <button onclick="doGetByKey()">Get By Key</button>
+            <button onclick="doPost()">Post</button>
+            <button onclick="doPut()">Put</button>
+            <button onclick="doDelete()">Delete</button>
+        </div>
+
+        <pre id="output" class="output">Kết quả sẽ hiện ở đây...</pre>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const host = "https://lab4-b50a2-default-rtdb.firebaseio.com";
+        const output = document.getElementById("output");
+
+        function show(data){
+            output.textContent = typeof data === "string"
+                ? data
+                : JSON.stringify(data, null, 2);
+        }
+
+        function doGetAll() {
+            const url = `${host}/students.json`;
+            axios.get(url).then(resp => {
+                console.log("GET ALL SUCCESS:", resp.data);
+                show(resp.data);
+            }).catch(error => {
+                console.error("GET ALL ERROR:", error);
+                show(error.message);
+            });
+        }
+
+        function doGetByKey() {
+            const key = prompt("Nhập key sinh viên:");
+            if(!key) return;
+
+            const url = `${host}/students/${key}.json`;
+            axios.get(url).then(resp => {
+                console.log("GET BY KEY SUCCESS:", resp.data);
+                show(resp.data);
+            }).catch(error => {
+                console.error("GET BY KEY ERROR:", error);
+                show(error.message);
+            });
+        }
+
+        function doPost() {
+            const url = `${host}/students.json`;
+            const data = {
+                id: "SV002",
+                name: "Sinh viên 002",
+                mark: 5.5,
+                gender: true
+            };
+
+            axios.post(url, data).then(resp => {
+                console.log("POST SUCCESS:", resp.data);
+                show(resp.data);
+            }).catch(error => {
+                console.error("POST ERROR:", error);
+                show(error.message);
+            });
+        }
+
+        function doPut() {
+            const key = prompt("Nhập key cần cập nhật:");
+            if(!key) return;
+
+            const url = `${host}/students/${key}.json`;
+            const data = {
+                id: "SV002",
+                name: "Sinh viên cập nhật",
+                mark: 9.0,
+                gender: false
+            };
+
+            axios.put(url, data).then(resp => {
+                console.log("PUT SUCCESS:", resp.data);
+                show(resp.data);
+            }).catch(error => {
+                console.error("PUT ERROR:", error);
+                show(error.message);
+            });
+        }
+
+        function doDelete() {
+            const key = prompt("Nhập key cần xóa:");
+            if(!key) return;
+
+            const url = `${host}/students/${key}.json`;
+            axios.delete(url).then(resp => {
+                console.log("DELETE SUCCESS:", resp.data);
+                show(resp.data);
+            }).catch(error => {
+                console.error("DELETE ERROR:", error);
+                show(error.message);
+            });
+        }
+    </script>
+</body>
+</html>

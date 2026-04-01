@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1d4ed8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            border-radius: 22px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+            padding: 35px;
+            text-align: center;
+        }
+
+        .login-card h2 {
+            margin-top: 0;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .login-card p.desc {
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        .error-text {
+            min-height: 24px;
+            color: #dc2626;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #374151;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+        }
+
+        .btn {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-login {
+            background: #2563eb;
+            color: white;
+            margin-top: 8px;
+        }
+
+        .btn-login:hover {
+            background: #1d4ed8;
+        }
+
+        .google-btn {
+            display: block;
+            width: 100%;
+            margin-top: 14px;
+            text-decoration: none;
+            background: #ef4444;
+            color: white;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .google-btn:hover {
+            background: #dc2626;
+        }
+
+        .home-link {
+            display: inline-block;
+            margin-top: 18px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .home-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="login-card">
+    <h2>Đăng nhập hệ thống</h2>
+    <p class="desc">Lab 3 - Spring Security + Google OAuth2</p>
+
+    <div class="error-text" th:text="${message}"></div>
+
+    <form th:action="@{/login/check}" method="post">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Nhập username">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Nhập password">
+        </div>
+
+        <button type="submit" class="btn btn-login">Đăng nhập thường</button>
+    </form>
+
+    <a class="google-btn" th:href="@{/oauth2/authorization/google}">
+        Đăng nhập bằng Google
+    </a>
+
+    <a class="home-link" th:href="@{/}">← Về trang chủ</a>
+</div>
+</body>
+</html>

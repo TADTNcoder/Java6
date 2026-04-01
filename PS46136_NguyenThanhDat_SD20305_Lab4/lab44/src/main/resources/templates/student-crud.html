@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 4 - Student CRUD</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eff6ff, #eef2ff, #f5f3ff);
+            padding: 30px;
+        }
+
+        .container{
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+
+        .header{
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .header h1{
+            margin: 0 0 8px;
+        }
+
+        .header p{
+            margin: 0;
+            opacity: .9;
+        }
+
+        .content{
+            padding: 28px;
+        }
+
+        .form-card{
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 24px;
+        }
+
+        .form-grid{
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 14px 16px;
+            align-items: center;
+        }
+
+        .form-grid label{
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .form-grid input[type="text"],
+        .form-grid input[type="number"]{
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            outline: none;
+            background: white;
+        }
+
+        .form-grid input:focus{
+            border-color: #2563eb;
+        }
+
+        .gender-box{
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            color: #334155;
+        }
+
+        .actions{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .actions button{
+            border: none;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: .3s;
+        }
+
+        .btn-create{ background: #2563eb; }
+        .btn-update{ background: #16a34a; }
+        .btn-delete{ background: #dc2626; }
+        .btn-reset{ background: #64748b; }
+
+        .actions button:hover{
+            transform: translateY(-2px);
+            opacity: .95;
+        }
+
+        .table-card{
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th{
+            background: #dbeafe;
+            color: #1e3a8a;
+            text-align: left;
+            padding: 14px;
+        }
+
+        td{
+            padding: 14px;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        tr:hover{
+            background: #f8fafc;
+        }
+
+        .action-link{
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .edit-link{
+            color: #2563eb;
+        }
+
+        .delete-link{
+            color: #dc2626;
+        }
+
+        .note{
+            margin-top: 14px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px){
+            .form-grid{
+                grid-template-columns: 1fr;
+            }
+
+            th, td{
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>QUẢN LÝ SINH VIÊN</h1>
+            <p>Lab 4 - Firebase REST API CRUD</p>
+        </div>
+
+        <div class="content">
+            <div class="form-card">
+                <div class="form-grid">
+                    <label for="id">Id:</label>
+                    <input id="id" type="text" placeholder="Nhập mã sinh viên">
+
+                    <label for="name">Full Name:</label>
+                    <input id="name" type="text" placeholder="Nhập họ tên">
+
+                    <label for="mark">Average Mark:</label>
+                    <input id="mark" type="number" step="0.1" placeholder="Nhập điểm">
+
+                    <label>Gender:</label>
+                    <div class="gender-box">
+                        <label><input type="radio" name="gender" id="male"> Male</label>
+                        <label><input type="radio" name="gender" id="female"> Female</label>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-create" onclick="$api.create()">Create</button>
+                    <button class="btn-update" onclick="$api.update()">Update</button>
+                    <button class="btn-delete" onclick="$api.delete()">Delete</button>
+                    <button class="btn-reset" onclick="$api.reset()">Reset</button>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Mark</th>
+                            <th>Gender</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <p class="note">Dữ liệu được lưu trực tiếp trên Firebase Realtime Database.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="student-crud.js"></script>
+</body>
+</html>
