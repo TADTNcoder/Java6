@@ -1,0 +1,42 @@
+ Lập trình JAVA 6 
+ 
+ Page 1 
+ 
+MỤC TIÊU 
+• Xây dựng WebSocket Server với Spring Boot 
+• Xây dựng WebSocket Client với StompJs 
+BÀI 1: (3 ĐIỂM) 
+Sử dụng Spring Boot WebSocket và VueJS/StompJs để xây dựng ứng dụng chat online có giao 
+diện và mô tả như sau: 
+ 
+TƯƠNG TÁC XỬ LÝ 
+Connect.Click Mở kết nối đến server 
+Disconnect.Click Ngắt kết nối 
+Send.Click Gửi tin nhắn cho mọi người 
+Hướng dẫn thực hiện: 
+Tham khảo slide và thực hiện các công việc sau 
+• Khai báo dependency 
+• Tạo file cấu hình WebSocketConfig 
+• Tạo ChatMessage mô tả cấu trúc dữ liệu tin nhắn 
+• Tạo ChatController điều khiển gửi tin nhắn từ client 
+• Nhúng thư viện StompJs vào index.html 
+• Tạo ChatView.vue thiết kế giao diện và cài đặt mã JS 
+• Enable/Disable các nút sao cho hợp lý: 
+ Lập trình JAVA 6 
+ 
+ Page 2 
+ 
+o Chưa connect: Disable button Disconnect, Send và Enable button Connect 
+o Đã connect: Disabled button Connect và Enable button Disconnect, Send 
+BÀI 2: (3 ĐIỂM) 
+Nâng cấp bài 1 để giao diện hiển thị thêm danh sách những người đang online. 
+Hướng dẫn: 
+• Sau khi connect thành công thì gửi username lên @MessageMapping(“/username”) và bổ 
+sung username vào SessionAttributes. Phương thức điều khiển trả về ChatMessage với 
+content (nội dung) là danh sách username lấy từ SessionAttributes và type là JOIN. 
+• Xử lý sự kiện Disconnected: Xóa user khỏi SessionAttributes và gửi ChatMessage với 
+content (nội dung) là danh sách username lấy từ SessionAttributes và type là LEAVE 
+• ChatView.vue caaph nhật lại danh sách người dùng 
+BÀI 3: (4 ĐIỂM) 
+Giảng viên cho thêm 
+ 
